@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  scholareval:
+    build: .
+    container_name: scholareval
+    ports:
+      - "8000:8000"
+    environment:
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=False
+      - MAX_FILE_SIZE_MB=50
+      - CHUNK_SIZE=200
+      - CHUNK_OVERLAP=50
+      - TOP_K=4
+    volumes:
+      - scholareval_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  scholareval_data:
+    driver: local

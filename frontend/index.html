@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarEval - Test System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #5B21B6;
+            --primary-light: #7C3AED;
+            --primary-dark: #4C1D95;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+            --bg: #F9FAFB;
+            --surface: #FFFFFF;
+            --border: #E5E7EB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --text-light: #9CA3AF;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Section */
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="file"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.08);
+        }
+
+        input[type="file"] {
+            padding: 0.75rem;
+            cursor: pointer;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #D1D5DB;
+        }
+
+        .btn-small {
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--bg);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.0625rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Results */
+        .results-container {
+            display: space-y: 1.5rem;
+        }
+
+        .result-item {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--border);
+        }
+
+        .result-item.success {
+            border-left-color: var(--success);
+        }
+
+        .result-item.partial {
+            border-left-color: var(--warning);
+        }
+
+        .result-item.error {
+            border-left-color: var(--error);
+        }
+
+        .result-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .result-score-value {
+            color: var(--primary);
+        }
+
+        .result-score-max {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .feedback {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .points {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .points-group {
+            font-size: 0.875rem;
+        }
+
+        .points-group-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .points-group-title.success {
+            color: var(--success);
+        }
+
+        .points-group-title.error {
+            color: var(--error);
+        }
+
+        .points-list {
+            list-style: none;
+        }
+
+        .points-list li {
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .points-group.success .points-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .points-group.error .points-list li:before {
+            content: "✕";
+            position: absolute;
+            left: 0;
+            color: var(--error);
+        }
+
+        /* Score Banner */
+        .score-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-banner-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-banner-label {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-banner-percent {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        /* Action Group */
+        .action-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-group .btn {
+            flex: 1;
+        }
+
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            header {
+                padding: 1.5rem 1rem;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .points {
+                grid-template-columns: 1fr;
+            }
+
+            .action-group {
+                flex-direction: column;
+            }
+
+            .score-banner-value {
+                font-size: 2.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎓 ScholarEval</h1>
+    </header>
+
+    <div class="container">
+        <main>
+            <!-- Dashboard View -->
+            <div id="dashboardView">
+                <!-- Upload Section -->
+                <div class="section">
+                    <h2 class="section-title">📄 Add to Knowledge Base</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9375rem;">Upload PDF files to expand your question bank and improve test generation.</p>
+                    <div class="form-group">
+                        <input type="file" id="file" accept=".pdf" multiple>
+                    </div>
+                    <button class="btn btn-primary btn-full" id="uploadBtn" onclick="upload()">Upload PDF</button>
+                    <div id="uploadStatus" style="margin-top: 1rem; font-size: 0.875rem;"></div>
+                </div>
+
+                <!-- Subjects Grid -->
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--text-primary);">📚 Available Subjects</h2>
+                <div id="subjectsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Subjects will be loaded here -->
+                </div>
+                <div id="subjectsStatus" style="text-align: center; padding: 3rem 2rem; color: var(--text-secondary);">
+                    Loading subjects...
+                </div>
+            </div>
+
+            <!-- Test Setup Modal -->
+            <div id="testSetupView" style="display: none;">
+                <div class="section">
+                    <button class="btn btn-secondary btn-small" onclick="backToDashboard()" style="margin-bottom: 1.5rem;">← Back to Dashboard</button>
+                    <h2 class="section-title" id="setupTitle">🧪 Configure Test</h2>
+                    <div class="form-group">
+                        <label for="numQuestions">Number of Questions</label>
+                        <input id="numQuestions" type="number" placeholder="Enter number" min="1" max="50" value="5">
+                    </div>
+                    <button class="btn btn-primary btn-full" id="generateBtn" onclick="generateTest()">Generate Test</button>
+                </div>
+            </div>
+
+            <!-- Test View -->
+            <div id="testView" style="display: none;">
+                <button class="btn btn-secondary btn-small" onclick="backToDashboard()" style="margin-bottom: 1.5rem;">← Back to Dashboard</button>
+                <div class="section" style="margin-bottom: 1.5rem;">
+                    <h2 class="section-title" id="testTitle">Mock Test</h2>
+                    <p id="testMeta" style="color: var(--text-secondary); font-size: 0.9375rem;"></p>
+                </div>
+                <div id="testArea"></div>
+                <button class="btn btn-primary btn-full" id="submitBtn" style="padding: 1.125rem; font-size: 1.0625rem; margin-top: 2rem;" onclick="submitTest()">Submit Test</button>
+            </div>
+
+            <!-- Results View -->
+            <div id="resultsView" style="display: none;">
+                <button class="btn btn-secondary btn-small" onclick="backToDashboard()" style="margin-bottom: 1.5rem;">← Back to Dashboard</button>
+                <div class="score-banner" id="scoreBanner"></div>
+                <div class="section">
+                    <h2 class="section-title">📊 Detailed Feedback</h2>
+                    <div id="results"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API = window.location.origin;
+        let currentTestId = null;
+        let currentSubject = null;
+        let currentTest = null;
+
+        // View Management
+        function showView(viewId) {
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('testSetupView').style.display = 'none';
+            document.getElementById('testView').style.display = 'none';
+            document.getElementById('resultsView').style.display = 'none';
+            document.getElementById(viewId).style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function backToDashboard() {
+            showView('dashboardView');
+            loadSubjects();
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            loadSubjects();
+        });
+
+        // Load Subjects
+        async function loadSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            const status = document.getElementById('subjectsStatus');
+
+            container.innerHTML = '';
+            status.innerHTML = 'Loading subjects...';
+
+            try {
+                const res = await fetch(API + '/api/subjects');
+                const data = await res.json();
+
+                if (!res.ok) throw new Error(data.error || 'Failed to load subjects');
+
+                const subjects = data.subjects || [];
+                const stats = data.stats || {};
+
+                if (subjects.length === 0) {
+                    status.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <div class="empty-state-text">
+                                <p><strong>No subjects yet</strong></p>
+                                <p style="color: var(--text-light); margin-top: 0.5rem;">Upload a PDF to get started.</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                status.style.display = 'none';
+
+                subjects.forEach(subject => {
+                    const count = stats[subject] || 0;
+                    const card = document.createElement('div');
+                    card.className = 'section';
+                    card.style.cursor = 'pointer';
+                    card.style.transition = 'transform 0.2s, box-shadow 0.2s';
+                    card.onmouseover = () => {
+                        card.style.transform = 'translateY(-4px)';
+                        card.style.boxShadow = '0 8px 16px rgba(91, 33, 182, 0.15)';
+                    };
+                    card.onmouseout = () => {
+                        card.style.transform = 'translateY(0)';
+                        card.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+                    };
+                    card.onclick = () => openTestSetup(subject);
+
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">${subject}</h3>
+                                <p style="color: var(--text-secondary); font-size: 0.9375rem;">${count} question${count !== 1 ? 's' : ''} available</p>
+                            </div>
+                            <div style="background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 1.125rem;">${count}</div>
+                        </div>
+                        <button class="btn btn-primary btn-small" style="margin-top: 1rem; width: 100%;">Start Test →</button>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                status.innerHTML = `<div style="color: var(--error);">❌ ${err.message}</div>`;
+            }
+        }
+
+        // Upload PDF
+        async function upload() {
+            const file = document.getElementById("file").files[0];
+            if (!file) {
+                showStatus('uploadStatus', '❌ Please select a file', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Uploading...';
+
+            const form = new FormData();
+            form.append("file", file);
+
+            try {
+                const res = await fetch(API + "/ingest_questions", {
+                    method: "POST",
+                    body: form
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+                showStatus('uploadStatus', `✓ Successfully processed: ${data.questions_indexed || 0} questions indexed`, 'success');
+                document.getElementById("file").value = '';
+                
+                setTimeout(() => loadSubjects(), 500);
+            } catch (err) {
+                showStatus('uploadStatus', `❌ ${err.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Upload PDF';
+            }
+        }
+
+        function showStatus(elementId, message, type = 'info') {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            
+            let color = 'var(--text-secondary)';
+            if (type === 'success') color = 'var(--success)';
+            if (type === 'error') color = 'var(--error)';
+            
+            el.innerHTML = `<span style="color: ${color}; font-size: 0.875rem;">${message}</span>`;
+        }
+
+        // Test Setup
+        function openTestSetup(subject) {
+            currentSubject = subject;
+            document.getElementById('setupTitle').textContent = `🧪 ${subject} - Configure Test`;
+            document.getElementById('numQuestions').value = '5';
+            showView('testSetupView');
+        }
+
+        // Generate Test
+        async function generateTest() {
+            const num = parseInt(document.getElementById('numQuestions').value);
+            if (!num || num < 1) {
+                alert("Please enter a valid number of questions");
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Generating...';
+
+            try {
+                const res = await fetch(API + '/api/generate_test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        subject: currentSubject,
+                        num_questions: num
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to generate test');
+
+                currentTestId = data.test.test_id;
+                currentTest = data.test;
+                renderTest(data.test);
+                showView('testView');
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Generate Test';
+            }
+        }
+
+        // Render Test
+        function renderTest(test) {
+            document.getElementById('testTitle').textContent = `📝 ${test.subject} - Mock Test`;
+            document.getElementById('testMeta').textContent = `${test.questions.length} questions | ${test.total_marks} total marks`;
+
+            const container = document.getElementById('testArea');
+            container.innerHTML = '';
+
+            test.questions.forEach((q, i) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'section';
+                qDiv.innerHTML = `
+                    <div class="question-card">
+                        <div class="question-number">Question ${i + 1} / ${test.questions.length}</div>
+                        <div class="question-text">${q.question}</div>
+                        <div style="background: var(--bg); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem; display: inline-block;">[${q.max_marks} Marks]</div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Your Answer</label>
+                        <textarea id="answer_${q.id}" placeholder="Type your answer here..." style="font-size: 1rem;"></textarea>
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        // Submit Test
+        async function submitTest() {
+            const answers = [];
+            
+            currentTest.questions.forEach((q, i) => {
+                const answer = document.getElementById(`answer_${q.id}`).value.trim();
+                answers.push({
+                    question_id: q.id,
+                    answer: answer || "(No answer provided)"
+                });
+            });
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Evaluating...';
+
+            try {
+                const res = await fetch(API + `/api/test/${currentTestId}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answers })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to submit test');
+
+                renderResults(data);
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Test';
+            }
+        }
+
+        // Render Results
+        function renderResults(data) {
+            const score = data.score;
+            const test = data.test;
+            const percent = Math.round((score.total_score / score.total_max_marks) * 100);
+
+            let grade = 'Excellent';
+            let gradeColor = 'var(--success)';
+            if (percent < 80) grade = 'Good';
+            if (percent < 60) { grade = 'Fair'; gradeColor = 'var(--warning)'; }
+            if (percent < 40) { grade = 'Poor'; gradeColor = 'var(--error)'; }
+
+            document.getElementById('scoreBanner').innerHTML = `
+                <div class="score-banner-value">${score.total_score}/${score.total_max_marks}</div>
+                <div class="score-banner-label">Test Score</div>
+                <div class="score-banner-percent" style="color: ${gradeColor}; margin-bottom: 1rem;">${percent}% - ${grade}</div>
+                <p style="font-size: 0.9375rem; opacity: 0.95;">${score.overall_feedback}</p>
+            `;
+
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            test.questions.forEach((q, i) => {
+                const evaluation = q.evaluation || {};
+                const qScore = evaluation.score || 0;
+                const percent = q.max_marks > 0 ? Math.round((qScore / q.max_marks) * 100) : 0;
+                let resultClass = percent >= 80 ? 'success' : percent >= 40 ? 'partial' : 'error';
+
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `result-item ${resultClass}`;
+                
+                let pointsHtml = '';
+                if ((evaluation.points_hit && evaluation.points_hit.length > 0) || (evaluation.points_missed && evaluation.points_missed.length > 0)) {
+                    pointsHtml = '<div class="points">';
+                    
+                    if (evaluation.points_hit && evaluation.points_hit.length > 0) {
+                        pointsHtml += `
+                            <div class="points-group success">
+                                <div class="points-group-title success">✓ Covered</div>
+                                <ul class="points-list">
+                                    ${evaluation.points_hit.map(p => `<li>${p}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    if (evaluation.points_missed && evaluation.points_missed.length > 0) {
+                        pointsHtml += `
+                            <div class="points-group error">
+                                <div class="points-group-title error">✕ Missed</div>
+                                <ul class="points-list">
+                                    ${evaluation.points_missed.map(p => `<li>${p}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    pointsHtml += '</div>';
+                }
+
+                resultDiv.innerHTML = `
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="color: var(--text-primary); font-size: 1.0625rem;">Q${i + 1}: ${q.question.substring(0, 80)}${q.question.length > 80 ? '...' : ''}</strong>
+                    </div>
+                    <div class="result-score">
+                        <span class="result-score-value">${qScore}</span>
+                        <span class="result-score-max">/ ${q.max_marks}</span>
+                    </div>
+                    <div class="feedback">${evaluation.feedback || 'No feedback available'}</div>
+                    ${pointsHtml}
+                `;
+                resultsContainer.appendChild(resultDiv);
+            });
+
+            showView('resultsView');
+        }
+    </script>
+</body>
+</html>
